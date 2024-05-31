@@ -1,5 +1,6 @@
 // eslint-disable-next-line prettier/prettier
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Author } from "src/bookshop/author/entities/author.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Book {
@@ -15,4 +16,14 @@ export class Book {
 
   @Column({ type: 'varchar', length: 255 })
   category: string;
+
+  @Column('decimal')
+  price: number;
+
+  @Column({default: 1})
+  stock: number;
+
+  @ManyToOne(()=> Author, author=>author.books )
+  @JoinColumn({name: 'authorId'})
+  author: Author;
 }

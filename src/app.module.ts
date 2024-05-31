@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './bookshop/services/app.service';
-import { BookshopModule } from './bookshop/modules/bookshop.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Book } from './bookshop/entities/book.entity';
+
+import { Book } from './bookshop/books/entities/book.entity';
+import { Author } from './bookshop/author/entities/author.entity';
+import { AuthorController } from './bookshop/author/controller/author.controller';
+import { BookshopController } from './bookshop/books/controllers/bookshop.controller';
+import { BookshopService } from './bookshop/books/services/bookshop.service';
+import { AuthorService } from './bookshop/author/service/author.service';
+
 
 @Module({
   imports: [
@@ -20,16 +25,14 @@ import { Book } from './bookshop/entities/book.entity';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [Book],
+      entities: [Book, Author],
       extra: {
         ssl: true,
       },
     }),
-
-    BookshopModule,
+    TypeOrmModule.forFeature([Book, Author])
   ],
-  controllers: [],
-  providers: [AppService],
-  exports: [TypeOrmModule],
+  controllers: [AuthorController, BookshopController],
+  providers: [AuthorService, BookshopService],
 })
 export class AppModule {}

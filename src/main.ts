@@ -32,7 +32,7 @@ async function bootstrap() {
     }),
   );
 
-  console.log(`Running app on :ttp://localhost:${port}/api/v1`);
+  console.log(`Running app on :http://localhost:${port}/api/v1`);
   
   await app.listen(port);
 }
