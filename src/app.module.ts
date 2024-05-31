@@ -3,6 +3,7 @@ import { AppService } from './bookshop/services/app.service';
 import { BookshopModule } from './bookshop/modules/bookshop.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Book } from './bookshop/entities/book.entity';
 
 @Module({
   imports: [
@@ -13,17 +14,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
-      port: +process.env.PORT,
+      port: +process.env.PORT_DB,
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [Book]
+      entities: [Book],
+      extra: {
+        ssl: true,
+      },
     }),
-    
-    BookshopModule],
+
+    BookshopModule,
+  ],
   controllers: [],
   providers: [AppService],
+  exports: [TypeOrmModule],
 })
 export class AppModule {}

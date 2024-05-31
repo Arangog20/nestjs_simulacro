@@ -1,16 +1,18 @@
+// eslint-disable-next-line prettier/prettier
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Book {
-    @PrimaryGeneratedColumn()
-    id: number;
+  /* este decorador sirve ṕara llaves primaria autogeneradas que vayan incrementando */
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    title: string;
+  @Column({ type: 'varchar', length: 255, unique: true })
+  title: string;
 
-    @Column()
-    year: number;
+  @Column({ type: 'int' })
+  year: number;
 
-    @Column()
-    category: string;
+  @Column({ type: 'varchar', length: 255 })
+  category: string;
 }

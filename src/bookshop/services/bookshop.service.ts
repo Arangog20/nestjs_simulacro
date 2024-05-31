@@ -1,22 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBookshopDto } from '../dto/create-bookshop.dto';
-import { UpdateBookshopDto } from '../dto/update-bookshop.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { Book } from '../entities/book.entity';
 
 @Injectable()
 export class BookshopService {
-  create(createBookshopDto: CreateBookshopDto) {
+  constructor(@InjectRepository(Book) private bookRepo: Repository<Book>) {}
+  create() {
     return 'This action adds a new bookshop';
   }
 
   findAll() {
-    return `This action returns all bookshop`;
+    return this.bookRepo.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} bookshop`;
+    const book = this.bookRepo.findOne({ where: { id } });
+    if (!book) {
+      throw new NotFoundException(`Book #${id} not found`);
+    }
+    return book;
   }
 
-  update(id: number, updateBookshopDto: UpdateBookshopDto) {
+  update(id: number) {
     return `This action updates a #${id} bookshop`;
   }
 
